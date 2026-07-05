@@ -4,7 +4,7 @@ import "./App.css";
 function App() {
   const [countries, setCountries] = useState([]);
   const [search, setSearch] = useState("");
-  const [region, setRegion] = useState("ALL");
+  const [region, setRegion] = useState("All");
 
   useEffect(() => {
     getCountries();
@@ -23,9 +23,11 @@ function App() {
     ) {
       return false;
     }
-    if (region !== "ALL" && country.region !== region) {
+
+    if (region !== "All" && country.region !== region) {
       return false;
     }
+
     return true;
   });
 
@@ -35,7 +37,8 @@ function App() {
     return total + country.population;
   }, 0);
 
-  const averagePopulation = Math.round(totalPopulation / totalCountries);
+  const averagePopulation =
+    totalCountries > 0 ? Math.round(totalPopulation / totalCountries) : 0;
 
   return (
     <div className="App">
@@ -61,10 +64,11 @@ function App() {
       <input
         type="text"
         placeholder="Search country"
+        value={search}
         onChange={(e) => setSearch(e.target.value)}
       />
 
-      <select onChange={(e) => setRegion(e.target.value)}>
+      <select value={region} onChange={(e) => setRegion(e.target.value)}>
         <option value="All">All</option>
         <option value="Africa">Africa</option>
         <option value="Americas">Americas</option>
@@ -75,9 +79,11 @@ function App() {
 
       {shownCountries.map((country) => (
         <div className="country" key={country.name.common}>
+          <img src={country.flags.png} alt={country.name.common} />
+
           <h3>{country.name.common}</h3>
           <p>Region: {country.region}</p>
-          <p>Capital: {country.capital}</p>
+          <p>Capital: {country.capital ? country.capital[0] : "None"}</p>
           <p>Population: {country.population.toLocaleString()}</p>
         </div>
       ))}
