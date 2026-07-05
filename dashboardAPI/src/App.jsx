@@ -29,6 +29,14 @@ function App() {
     return true;
   });
 
+  const totalCountries = shownCountries.length;
+
+  const totalPopulation = shownCountries.reduce((total, country) => {
+    return total + country.population;
+  }, 0);
+
+  const averagePopulation = Math.round(totalPopulation / totalCountries);
+
   return (
     <>
       <div className="App">
