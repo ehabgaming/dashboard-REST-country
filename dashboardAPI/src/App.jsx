@@ -38,11 +38,50 @@ function App() {
   const averagePopulation = Math.round(totalPopulation / totalCountries);
 
   return (
-    <>
-      <div className="App">
-        <h1>Countries Dashboard</h1>
+    <div className="App">
+      <h1>Countries Dashboard</h1>
+
+      <div className="stats">
+        <div>
+          <h2>{totalCountries}</h2>
+          <p>Total Countries</p>
+        </div>
+
+        <div>
+          <h2>{totalPopulation.toLocaleString()}</h2>
+          <p>Total Population</p>
+        </div>
+
+        <div>
+          <h2>{averagePopulation.toLocaleString()}</h2>
+          <p>Average Population</p>
+        </div>
       </div>
-    </>
+
+      <input
+        type="text"
+        placeholder="Search country"
+        onChange={(e) => setSearch(e.target.value)}
+      />
+
+      <select onChange={(e) => setRegion(e.target.value)}>
+        <option value="All">All</option>
+        <option value="Africa">Africa</option>
+        <option value="Americas">Americas</option>
+        <option value="Asia">Asia</option>
+        <option value="Europe">Europe</option>
+        <option value="Oceania">Oceania</option>
+      </select>
+
+      {shownCountries.map((country) => (
+        <div className="country" key={country.name.common}>
+          <h3>{country.name.common}</h3>
+          <p>Region: {country.region}</p>
+          <p>Capital: {country.capital}</p>
+          <p>Population: {country.population.toLocaleString()}</p>
+        </div>
+      ))}
+    </div>
   );
 }
 
