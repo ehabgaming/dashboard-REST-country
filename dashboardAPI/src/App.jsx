@@ -6,20 +6,31 @@ function App() {
   const [search, setSearch] = useState("");
   const [region, setRegion] = useState("All");
 
+  const getCountries = async () => {
+    const res = await fetch(
+      "https://api.restcountries.com/countries/v5?pretty=1&limit=100",
+      {
+        headers: {
+          Authorization: `Bearer ${import.meta.env.VITE_API_KEY}`,
+        },
+      },
+    );
+
+    const data = await res.json();
+    console.log(data);
+
+    setCountries(data.data.objects);
+  };
+
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     getCountries();
   }, []);
-
-  const getCountries = async () => {
-    const res = await fetch("https://restcountries.com/v3.1/all");
-    const data = await res.json();
-    setCountries(data);
-  };
 
   const shownCountries = countries.filter((country) => {
     if (
       search !== "" &&
-      !country.name.common.toLowerCase().includes(search.toLowerCase())
+      !country.names.common.toLowerCase().includes(search.toLowerCase())
     ) {
       return false;
     }
@@ -78,12 +89,14 @@ function App() {
       </select>
 
       {shownCountries.map((country) => (
-        <div className="country" key={country.name.common}>
-          <img src={country.flags.png} alt={country.name.common} />
+        <div className="country" key={country.uuid}>
+          {country.flag.url_png && (
+            <img src={country.flag.url_png} alt={country.names.common} />
+          )}
 
-          <h3>{country.name.common}</h3>
+          <h3>{country.names.common}</h3>
           <p>Region: {country.region}</p>
-          <p>Capital: {country.capital ? country.capital[0] : "None"}</p>
+          <p>Capital: {country.capitals?.[0]?.name || "None"}</p>
           <p>Population: {country.population.toLocaleString()}</p>
         </div>
       ))}
