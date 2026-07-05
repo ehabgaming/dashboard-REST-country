@@ -16,6 +16,19 @@ function App() {
     setCountries(data);
   };
 
+  const shownCountries = countries.filter((country) => {
+    if (
+      search !== "" &&
+      !country.name.common.toLowerCase().includes(search.toLowerCase())
+    ) {
+      return false;
+    }
+    if (region !== "ALL" && country.region !== region) {
+      return false;
+    }
+    return true;
+  });
+
   return (
     <>
       <div className="App">
