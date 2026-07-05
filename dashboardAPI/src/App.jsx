@@ -6,6 +6,16 @@ function App() {
   const [search, setSearch] = useState("");
   const [region, setRegion] = useState("ALL");
 
+  useEffect(() => {
+    getCountries();
+  }, []);
+
+  const getCountries = async () => {
+    const res = await fetch("https://restcountries.com/v3.1/all");
+    const data = await res.json();
+    setCountries(data);
+  };
+
   return (
     <>
       <div className="App">
